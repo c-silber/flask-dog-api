@@ -24,6 +24,4 @@ ENV S3_BUCKET=flask-dog-project
 ENV S3_KEY=AKIAIFL7DO2KU2TBT4HA
 ENV S3_SECRET_ACCESS_KEY=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
 
-ENTRYPOINT ["python"]
-
-CMD ["wsgi.py"]
+CMD [ "gunicorn", "-c", "gunicorn.conf", "wsgi:app" ]

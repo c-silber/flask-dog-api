@@ -60,5 +60,14 @@ EXPORT S3_SECRET_ACCESS_KEY=<your-s3-access-key>
 python wsgi.py
 ```
 
+## Deployment
+
+## Deployment
+
+```bash
+gunicorn --bind 0.0.0.0:8080 --workers 5 --timeout 120 wsgi:app
+```
+
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
