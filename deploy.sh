@@ -32,13 +32,13 @@ function clone_app_repository() {
     printf "***************************************************\n\t\tFetching App \n***************************************************\n"
     # Clone and access project directory
     echo ======== Cloning and accessing project directory ========
-    if [[ -d ~/yummy-rest ]]; then
-        sudo rm -rf ~/yummy-rest
-        git clone -b develop https://github.com/indungu/yummy-rest.git ~/yummy-rest
-        cd ~/yummy-rest/
+    if [[ -d ~/flask-dog-api ]]; then
+        sudo rm -rf ~/flask-dog-api
+        git clone https://github.com/c-silber/flask-dog-api.git ~/flask-dog-api
+        cd ~/flask-dog-api/
     else
-        git clone -b develop https://github.com/indungu/yummy-rest.git ~/yummy-rest
-        cd ~/yummy-rest/
+        git clone https://github.com/c-silber/flask-dog-api.git ~/flask-dog-api
+        cd ~/flask-dog-api/
     fi
 }
 
@@ -48,6 +48,16 @@ function setup_app() {
     # Install required packages
     echo ======= Installing required packages ========
     pip install -r requirements.txt
+
+    echo ======= Downloading dog images ========
+    wget https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip
+    unzip dogImages.zip
+
+    echo ======= Downloading bottleneck_features ========
+    mkdir bottleneck_features
+    cd bottleneck_features/
+    wget https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/DogInceptionV3Data.npz
+    cd ../
 
 }
 
@@ -121,9 +131,9 @@ EOF
 function configure_startup_service () {
     printf "***************************************************\n\t\tConfiguring startup service \n***************************************************\n"
 
-    sudo bash -c 'cat > /etc/systemd/system/yummy-rest.service <<EOF
+    sudo bash -c 'cat > /etc/systemd/system/flask-dog-api.service <<EOF
     [Unit]
-    Description=yummy-rest startup service
+    Description=flask-dog-api startup service
     After=network.target
     [Service]
     User=ubuntu
@@ -132,11 +142,11 @@ function configure_startup_service () {
     WantedBy=multi-user.target
 EOF'
 
-    sudo chmod 664 /etc/systemd/system/yummy-rest.service
+    sudo chmod 664 /etc/systemd/system/flask-dog-api.service
     sudo systemctl daemon-reload
-    sudo systemctl enable yummy-rest.service
-    sudo systemctl start yummy-rest.service
-    sudo service yummy-rest status
+    sudo systemctl enable flask-dog-api.service
+    sudo systemctl start flask-dog-api.service
+    sudo service flask-dog-api status
 }
 
 Serve the web app through gunicorn
