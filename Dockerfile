@@ -5,6 +5,7 @@ MAINTAINER Caroline "goldiesilber23@gmail.com"
 EXPOSE 8080
 RUN apt-get update -y
 RUN apt-get install wget -y
+RUN apt-get install unzip -y
 RUN apt-get install -y python-pip python-dev build-essential
 RUN apt-get install -y libsm6 libxext6 libxrender-dev
 
