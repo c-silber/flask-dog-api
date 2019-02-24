@@ -1,0 +1,14 @@
+ldap3
+gunicorn
+requests
+flask_restplus
+flask
+pytest
+numpy
+tensorflow
+keras
+Pillow
+opencv-python
+tqdm
+boto3
+python-dotenv
