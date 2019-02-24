@@ -4,20 +4,18 @@ MAINTAINER Caroline "goldiesilber23@gmail.com"
 
 EXPOSE 8080
 RUN apt-get update -y
-RUN apt-get install curl -y
+RUN apt-get install wget -y
 RUN apt-get install -y python-pip python-dev build-essential
 RUN apt-get install -y libsm6 libxext6 libxrender-dev
 
 COPY /src /
 WORKDIR /
 
-RUN mkdir bottleneck_features \
-&& curl https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/DogInceptionV3Data.npz -o /bottleneck_features/DogInceptionV3Data.npz
+RUN mkdir bottleneck_features && cd bottleneck_features \
+&& wget https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/DogInceptionV3Data.npz
 
-RUN mkdir dogImages \
-&& curl https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip -o /dogImages/
-
-RUN cd dogImages && unzip dogImages.zip && cd ../
+RUN wget https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip
+RUN unzip dogImages.zip
 
 RUN pip install -r requirements.txt
 
