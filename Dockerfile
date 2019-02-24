@@ -14,6 +14,11 @@ WORKDIR /
 RUN mkdir bottleneck_features \
 && curl https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/DogInceptionV3Data.npz -o /bottleneck_features/DogInceptionV3Data.npz
 
+RUN mkdir dogImages \
+&& curl https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip -o /dogImages/
+
+RUN cd dogImages && unzip dogImages.zip && cd ../
+
 RUN pip install -r requirements.txt
 
 ENV S3_BUCKET=flask-dog-project
