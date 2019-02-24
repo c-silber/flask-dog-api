@@ -5,7 +5,7 @@ import s3
 from error import _error
 
 application = Flask(__name__)
-api = Api(app, version='1.0', title='Dog Breed API')
+api = Api(application, version='1.0', title='Dog Breed API')
 
 dogSchema = api.model('dogSchema', {
     'imagePath': fields.Url('image_path')
