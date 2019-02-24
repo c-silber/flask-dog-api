@@ -4,8 +4,8 @@ import resources
 import s3
 from error import _error
 
-application = Flask(__name__)
-api = Api(application, version='1.0', title='Dog Breed API')
+app = Flask(__name__)
+api = Api(app, version='1.0', title='Dog Breed API')
 
 dogSchema = api.model('dogSchema', {
     'imagePath': fields.Url('image_path')
@@ -25,6 +25,7 @@ class Crowd(Resource):
 
             saveFile = s3.getImage(filename)
             if (saveFile == 200):
+                print("file: " + filename)
                 check = resources.run("s3_images/" + filename)
                 return check
             elif(saveFile == 404):
@@ -35,4 +36,4 @@ class Crowd(Resource):
             return _error(500, 'URL cannot be null')
 
 if __name__ == '__main__':
-    application.run()
+    app.run(host="0.0.0.0", port=8080)

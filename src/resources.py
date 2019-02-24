@@ -1,16 +1,16 @@
 from keras.applications.resnet50 import preprocess_input, decode_predictions
 from keras.preprocessing import image
+from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D, Dropout, Flatten, Dense
+from keras.models import Sequential
+from keras.applications.resnet50 import ResNet50
+from keras import backend as K
+
 from tqdm import tqdm
 import numpy as np
 from extract_bottleneck_features import *
-from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D
-from keras.layers import Dropout, Flatten, Dense
-from keras.models import Sequential
 import ssl
 import cv2
 from glob import glob
-from urllib import request
-from keras.applications.resnet50 import ResNet50
 
 def run(object):
     global ResNet50_model
@@ -32,7 +32,9 @@ def run(object):
     model.add(GlobalAveragePooling2D(input_shape=train_V3.shape[1:]))
     model.add(Dense(133, activation='softmax'))
     model.load_weights('models/weights.best.V3.hdf5')
-    return getDogBreed(object)
+    prediction = getDogBreed(object)
+    K.clear_session()
+    return prediction
 
 def InceptionV3Prediction(img_path):
     # extract bottleneck features
