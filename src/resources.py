@@ -72,9 +72,10 @@ def face_detector(img_path):
     return len(faces) > 0
 
 def getDogBreed(imgPath):
+    prediction = InceptionV3Prediction(imgPath)
     if dog_detector(imgPath) == 1:
-        return { 'type' : 'dog', 'breed' : InceptionV3Prediction(imgPath) }
+        return { 'Type' : 'Dog', 'Breed' : prediction.replace("_", " ")}
     elif face_detector(imgPath) == 1:
-        return { 'type' : 'human', 'breed' : InceptionV3Prediction(imgPath) }
+        return { 'Type' : 'Human', 'Breed' : prediction.replace("_", " ") }
     else:
-        return { 'type' : None, 'breed' : None }
+        return { 'Type' : None, 'Breed' : None }
