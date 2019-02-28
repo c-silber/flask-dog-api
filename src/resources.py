@@ -20,25 +20,25 @@ def run(object):
 
     ssl._create_default_https_context = ssl._create_unverified_context
     ResNet50_model = ResNet50(weights='imagenet')
-    face_cascade = cv2.CascadeClassifier('haarcascades/haarcascade_frontalface_alt2.xml')
+    face_cascade = cv2.CascadeClassifier('haarcascades/haarcascade_frontalface_alt.xml')
     dog_names = [item[20:-1] for item in sorted(glob("dogImages/train/*/"))]
 
-    bottleneck_features = np.load('bottleneck_features/DogInceptionV3Data.npz')
-    train_V3 = bottleneck_features['train']
-    valid_V3 = bottleneck_features['valid']
-    test_V3 = bottleneck_features['test']
+    bottleneck_features = np.load('bottleneck_features/DogXceptionData.npz')
+    train_DogXception = bottleneck_features['train']
+    valid_DogXception = bottleneck_features['valid']
+    test_DogXception = bottleneck_features['test']
 
     model = Sequential()
-    model.add(GlobalAveragePooling2D(input_shape=train_V3.shape[1:]))
+    model.add(GlobalAveragePooling2D(input_shape=train_DogXception.shape[1:]))
     model.add(Dense(133, activation='softmax'))
-    model.load_weights('models/weights.best.V3.hdf5')
+    model.load_weights('models/weights.best.DogXception.hdf5')
     prediction = getDogBreed(object)
     K.clear_session()
     return prediction
 
-def InceptionV3Prediction(img_path):
+def XceptionPrediction(img_path):
     # extract bottleneck features
-    bottleneck_feature = extract_InceptionV3(path_to_tensor(img_path))
+    bottleneck_feature = extract_Xception(path_to_tensor(img_path))
     # obtain predicted vector
     predicted_vector = model.predict(bottleneck_feature)
     # return dog breed that is predicted by the model
@@ -72,7 +72,7 @@ def face_detector(img_path):
     return len(faces) > 0
 
 def getDogBreed(imgPath):
-    prediction = InceptionV3Prediction(imgPath)
+    prediction = XceptionPrediction(imgPath)
     if dog_detector(imgPath) == 1:
         return { 'type' : 'Dog', 'breed' : prediction.replace("_", " ")}
     elif face_detector(imgPath) == 1:
